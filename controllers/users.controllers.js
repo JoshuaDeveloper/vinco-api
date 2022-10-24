@@ -10,14 +10,14 @@ const getUsers = (req = request, res = response) => {
 
 const putUsers = async (req, res = response) => {
   const { id } = req.params;
-  const { password, email, ...rest } = req.body;
+  const { _id, password, email, ...rest } = req.body;
 
   if (password) {
     const salt = bcryptjs.genSaltSync();
     rest.password = bcryptjs.hashSync(password, salt);
   }
 
-  const user = await User.findByIdAndUpdate(id, rest);
+  const user = await User.findByIdAndUpdate(id, rest, { new: true });
 
   console.log(user);
   res.json({ name: "PUT API- controler", user });
